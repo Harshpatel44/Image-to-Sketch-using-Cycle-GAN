@@ -40,19 +40,17 @@ def merge_images(sources, targets, batch_size=16):
         the first column.
         """
     _, _, h, w = sources.shape
-#     print(h, w)
     row = int(np.sqrt(batch_size))
     merged = np.zeros([3, row*h, row*w*2])
     for idx, (s, t) in enumerate(zip(sources, targets)):
-        i = idx // row # Row Number
-        j = idx % row # Column 
-        merged[:, i*h:(i+1)*h, (j*2)*w:(j*2+1)*w] = s
-#         print(merged.shape)
-        merged[:, i*h:(i+1)*h, (j*2+1)*w:(j*2+2)*w] = t
+        i = idx // row
+        j = idx % row
+        merged[:, i*h:(i+1)*h, (j*2)*h:(j*2+1)*h] = s
+        merged[:, i*h:(i+1)*h, (j*2+1)*h:(j*2+2)*h] = t
     merged = merged.transpose(1, 2, 0)
     return merged
     
-
+    
 def to_data(x):
     """Converts variable to numpy."""
     if torch.cuda.is_available():
@@ -66,42 +64,21 @@ def save_samples(iteration, fixed_Y, fixed_X, G_YtoX, G_XtoY, batch_size=16, sam
         """
     # move input data to correct device
     device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
-
+    
+    #fixed_Y is test_images for G1
+    #fixed_X is test_images for G2
+    
     fake_X = G_YtoX(fixed_Y.to(device))
     fake_Y = G_XtoY(fixed_X.to(device))
-    
     X, fake_X = to_data(fixed_X), to_data(fake_X)
     Y, fake_Y = to_data(fixed_Y), to_data(fake_Y)
-#     print("Helper FakeY:", fake_Y.shape)
-#     print("Helper X:", X.shape)
     merged = merge_images(X, fake_Y, batch_size)
     path = os.path.join(sample_dir, 'sample-{:06d}-X-Y.png'.format(iteration))
-    imageio.imwrite(path, merged)
-    #scipy.misc.imsave(path, merged)
+    imageio.imwrite(path,merged)
     print('Saved {}'.format(path))
     
     merged = merge_images(Y, fake_X, batch_size)
     path = os.path.join(sample_dir, 'sample-{:06d}-Y-X.png'.format(iteration))
-    imageio.imwrite(path, merged)
-    #scipy.misc.imsave(path, merged)
-    print('Saved {}'.format(path))
-def save_all_samples(iteration, fixed_Y, fixed_X, G_YtoX, G_XtoY, batch_size=16, sample_dir='samples_cyclegan'):
-    """Saves samples from both generators X->Y and Y->X.
-        """
-    # move input data to correct device
-    device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
-
-    fake_X = G_YtoX(fixed_Y.to(device))
-    fake_Y = G_XtoY(fixed_X.to(device))
-    X, fake_X = to_data(fixed_X), to_data(fake_X)
-    Y, fake_Y = to_data(fixed_Y), to_data(fake_Y)
-    merged = merge_images(X, fake_Y, batch_size)
-    path = os.path.join(sample_dir, 'image_output1.png'.format(iteration))
     imageio.imwrite(path,merged)
     print('Saved {}'.format(path))
     
-    merged = merge_images(Y, fake_X, batch_size)
-    path = os.path.join(sample_dir, 'image_output2.png'.format(iteration))
-    imageio.imwrite(path,merged)
-    print('Saved {}'.format(path))
-
