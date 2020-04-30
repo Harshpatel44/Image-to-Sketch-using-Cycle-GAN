@@ -1,5 +1,18 @@
-Steps followed in preprocessing:<br>
-<h3> we have 8630 mobile phone images </h3><br>
-1. <b>scrap.py</b> is used for downloading links from the dataset URL. The generated files are saved in dataset directory.<br>
-2. <b>convert_png.py</b> is used to convert all the images to png format. The generated files are saved in png_data directory.<br>
-3. <b>detect_edges.py</b> is used to convert the png generated images to sketches. the generates files are saved in edges_dataset.<br>
+<h2> Image to Sketch Translation </h2>
+
+<p>An application which converts a given <b>Image</b> -> <b>Sketch</b> & <b>Sketch</b> -> <b>Image</b>.</p>
+<p> We have used <b>Cycle-Generative Adversial Network</b>, which contains 2 discriminators and 2 generators.</p>
+<p> Number of iterations = 4000 </p>
+<p> Optimizer = Adam </p>
+<p> Dataset is taken from various sources and is not self-owned. </p>
+
+<h2> Results</h2>
+<h4>Image to sketch</h4>
+<img src='samples_cyclegan/sample-002200-X-Y.png' alt='missing main page' />
+
+<h4> Sketch to Image </h4>
+<img src='samples_cyclegan/sample-002200-Y-X.png' alt='missing main page' />
+
+<h2> References</h2>
+<p>1. <a href="https://github.com/junyanz/CycleGAN">Cycle-GAN github repository </a></p><br>
+<p>2. <a href="https://arxiv.org/pdf/1703.10593.pdf">Paper "Unpaired Image-to-Image Translation using Cycle-Consistent Adversial Networks"</a></p>
