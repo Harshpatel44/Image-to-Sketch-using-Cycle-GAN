@@ -14,5 +14,5 @@
 <img src='samples_cyclegan/sample-002200-Y-X.png' alt='missing main page' />
 
 <h2> References</h2>
-<p>1. <a href="https://github.com/junyanz/CycleGAN">Cycle-GAN github repository </a></p><br>
+<p>1. <a href="https://github.com/junyanz/CycleGAN">Cycle-GAN github repository </a></p>
 <p>2. <a href="https://arxiv.org/pdf/1703.10593.pdf">Paper "Unpaired Image-to-Image Translation using Cycle-Consistent Adversial Networks"</a></p>
